@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <title>Conway's Game of Life</title>
+  <script src="board.js"></script>
+  <script src="boardrenderer.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    function createBoard(cellSize) {
+      const boardWidth = Math.floor(window.innerWidth / cellSize);
+      const boardHeight = Math.floor(window.innerHeight / cellSize);
+      const board = new Board(boardWidth, boardHeight);
+
+      for (let i = 0; i < boardWidth * boardHeight / 10; i++) {
+        board.toggleAlive(
+          Math.floor(Math.random() * boardHeight),
+          Math.floor(Math.random() * boardWidth));
+      }
+      return board;
+    }
+    const cellSize = 3;
+    const renderer = new BoardRenderer(document.getElementById('canvas'), cellSize);
+    let board = createBoard(cellSize);
+    renderer.render(board);
+    const frameCallback = () => {
+      board.step();
+      renderer.render(board);
+      window.requestAnimationFrame(frameCallback);
+    }
+    window.requestAnimationFrame(frameCallback);
+    window.addEventListener('resize', () => board = createBoard(cellSize));
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <title>Conway's Game of Life</title>
+  <script src="board.js"></script>
+  <script src="boardrenderer.js"></script>
+  <script src="riddler.js"></script>
+  <style>
+    body {
+      margin: 0;
+    }
+    canvas {
+      background: #eee;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const height = 4;
+    const oscillators = findOscillators(3, height);
+    for (let oscillator of oscillators) {
+      const board = new Board(3, height);
+      numberToBoard(oscillator, board);
+      const canvas = document.createElement('canvas');
+      document.body.appendChild(canvas);
+      const renderer = new BoardRenderer(canvas, 50, '#ef8f74', '#30334f');
+      renderer.render(board);
+      canvas.addEventListener('click', () => {
+        board.step();
+        renderer.render(board);
+      }, false);
+    }
+  </script>
+</body>
+</html>
